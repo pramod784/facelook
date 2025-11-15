@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Facelook — Template</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#3b82f6; --muted:#94a3b8; --glass: rgba(255,255,255,0.03);
+      --radius:12px; --maxw:980px;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:linear-gradient(180deg,#071129 0%, #071b2a 100%);color:#e6eef6;display:flex;align-items:center;justify-content:center;padding:28px}
+    .app{width:100%;max-width:var(--maxw)}
+
+    header.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .brand h1{font-size:18px;margin:0}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);box-shadow:0 6px 18px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+
+    /* layout */
+    .layout{display:grid;grid-template-columns:320px 1fr;gap:16px}
+    .sidebar{display:flex;flex-direction:column;gap:12px}
+    nav .nav-item{padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;cursor:pointer}
+    nav .nav-item:hover{background:var(--glass)}
+    .content{display:flex;flex-direction:column;gap:12px}
+
+    /* login */
+    .center-screen{display:flex;align-items:center;justify-content:center;height:70vh}
+    form.login{width:420px}
+    label{display:block;margin-bottom:6px;color:var(--muted);font-size:13px}
+    input[type=text],input[type=password],textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    button{background:var(--accent);border:none;padding:10px 14px;border-radius:8px;color:white;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* post creation */
+    .post-creator{display:flex;gap:12px;align-items:flex-start}
+    .avatar{width:48px;height:48px;border-radius:50%;background:#0b1220;border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center}
+
+    /* posts */
+    .posts{display:flex;flex-direction:column;gap:12px}
+    .post{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(12,18,28,0.7), rgba(8,12,18,0.6));border:1px solid rgba(255,255,255,0.02)}
+    .post .meta{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+    .post h3{margin:0 0 6px 0}
+    .post p{margin:0;color:var(--muted)}
+
+    /* chat bot */
+    .chat-window{display:flex;flex-direction:column;height:520px}
+    .chat-messages{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+    .bubble{max-width:70%;padding:8px 12px;border-radius:12px}
+    .bubble.user{align-self:flex-end;background:linear-gradient(90deg,var(--accent),#60a5fa);color:#001025}
+    .bubble.bot{align-self:flex-start;background:rgba(255,255,255,0.03)}
+    .chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,0.02)}
+    .icon{opacity:0.8}
+
+    /* small screens */
+    @media (max-width:880px){.layout{grid-template-columns:1fr}.sidebar{order:2}.content{order:1}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="brand"><div class="logo">FL</div><h1>Welcome to facelook</h1></div>
+      <div class="muted">Lightweight HTML/CSS/JS template</div>
+    </header>
+
+    <div id="main" class="card layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <strong id="userNameDisplay">Guest</strong>
+            <button id="logoutBtn" style="display:none">Logout</button>
+          </div>
+          <p class="muted" style="margin-top:8px">Welcome to Facelook. Use the menu to switch screens.</p>
+        </div>
+
+        <nav class="card">
+          <div class="nav-item" data-screen="feed">🏠 Feed</div>
+          <div class="nav-item" data-screen="create">✍️ Create Post</div>
+          <div class="nav-item" data-screen="chat">🤖 Chat Bot</div>
+          <div class="nav-item" data-screen="login">🔐 Login</div>
+        </nav>
+
+        <div class="card muted">Tips: This template stores posts locally (browser). Replace JS with real APIs to connect to a backend.</div>
+      </aside>
+
+      <!-- CONTENT -->
+      <main class="content">
+        <!-- Login Screen -->
+        <section id="screen-login" class="card center-screen" style="display:none">
+          <form id="loginForm" class="login" onsubmit="return false">
+            <h2 style="margin-top:0">Sign in to Facelook</h2>
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="e.g. pramod" required />
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="password" required />
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button id="loginBtn">Login</button>
+              <button id="guestBtn" type="button" style="background:transparent;border:1px solid rgba(255,255,255,0.05)">Continue as guest</button>
+            </div>
+            <p class="muted" style="margin-top:10px">This demo does not transmit credentials — everything stays in your browser.</p>
+          </form>
+        </section>
+
+        <!-- Create Post Screen -->
+        <section id="screen-create" class="card" style="display:none">
+          <div class="post-creator">
+            <div class="avatar">U</div>
+            <div style="flex:1">
+              <textarea id="postContent" rows="4" placeholder="What's on your mind?" style="resize:none"></textarea>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+                <div class="muted">Add text, then click Post</div>
+                <div>
+                  <button id="postBtn">Post</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Feed Screen -->
+        <section id="screen-feed" class="card" style="display:none">
+          <h2 style="margin-top:0">Feed</h2>
+          <div id="posts" class="posts"></div>
+        </section>
+
+        <!-- Chat Screen -->
+        <section id="screen-chat" class="card" style="display:none">
+          <h2 style="margin-top:0">Facelook Chat Bot</h2>
+          <div class="chat-window">
+            <div id="messages" class="chat-messages"></div>
+            <div class="chat-input">
+              <input id="chatInput" type="text" placeholder="Ask me something..." />
+              <button id="sendChat">Send</button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script>
+    // --- Simple single-file SPA behavior ---
+    const screens = ['feed','create','chat','login'];
+    const showScreen = (name)=>{
+      screens.forEach(s=>document.getElementById('screen-'+s).style.display = s===name ? 'block' : 'none');
+      // highlight nav
+      document.querySelectorAll('nav .nav-item').forEach(n=> n.style.background = n.dataset.screen===name ? 'rgba(255,255,255,0.02)' : 'transparent')
+    }
+
+    // init
+    document.querySelectorAll('nav .nav-item').forEach(n=> n.addEventListener('click', ()=> showScreen(n.dataset.screen)));
+    showScreen('feed');
+
+    // --- simple auth (local only) ---
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const guestBtn = document.getElementById('guestBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userNameDisplay = document.getElementById('userNameDisplay');
+
+    function setUser(name){
+      localStorage.setItem('facelook_user', name);
+      userNameDisplay.textContent = name || 'Guest';
+      logoutBtn.style.display = name ? 'inline-block' : 'none';
+    }
+    // load user
+    setUser(localStorage.getItem('facelook_user'));
+
+    loginBtn.addEventListener('click', ()=>{
+      const u = document.getElementById('username').value.trim();
+      if(!u) return alert('Enter username');
+      setUser(u);
+      showScreen('feed');
+      renderPosts();
+    });
+    guestBtn.addEventListener('click', ()=>{ setUser('Guest'); showScreen('feed'); renderPosts(); });
+    logoutBtn.addEventListener('click', ()=>{ localStorage.removeItem('facelook_user'); setUser(null); showScreen('login'); });
+
+    // --- posts (stored in localStorage) ---
+    const postsKey = 'facelook_posts_v1';
+    function loadPosts(){
+      try{ return JSON.parse(localStorage.getItem(postsKey)) || [] }catch(e){return []}
+    }
+    function savePosts(arr){ localStorage.setItem(postsKey, JSON.stringify(arr)) }
+
+    // seed sample posts if empty
+    if(!localStorage.getItem(postsKey)){
+      const sample = [
+        {id:1,author:'Alex',text:'Welcome to Facelook — this is a sample post!',time:Date.now()-3600e3},
+        {id:2,author:'Sam',text:'Try creating a post from Create Post screen.',time:Date.now()-1600e3}
+      ]; savePosts(sample);
+    }
+
+    const postsEl = document.getElementById('posts');
+    function renderPosts(){
+      const arr = loadPosts().slice().reverse();
+      postsEl.innerHTML = '';
+      if(arr.length===0){ postsEl.innerHTML = '<p class="muted">No posts yet — be the first!</p>'; return }
+      arr.forEach(p=>{
+        const el = document.createElement('div'); el.className='post';
+        el.innerHTML = `
+          <div class="meta"><div class="avatar">${p.author[0]||'U'}</div><div><strong>${escapeHtml(p.author)}</strong><div class="muted" style="font-size:12px">${timeAgo(p.time)}</div></div></div>
+          <h3>${escapeHtml(p.text.substring(0,80))}</h3>
+          <p class="muted">${escapeHtml(p.text)}</p>
+        `;
+        postsEl.appendChild(el);
+      })
+    }
+    renderPosts();
+
+    document.getElementById('postBtn').addEventListener('click', ()=>{
+      const txt = document.getElementById('postContent').value.trim();
+      if(!txt) return alert('Write something to post');
+      const user = localStorage.getItem('facelook_user') || 'Guest';
+      const arr = loadPosts();
+      arr.push({id:Date.now(),author:user,text:txt,time:Date.now()});
+      savePosts(arr);
+      document.getElementById('postContent').value='';
+      showScreen('feed'); renderPosts();
+    });
+
+    // --- very small chatbot that replies to keywords ---
+    const messagesEl = document.getElementById('messages');
+    const chatInput = document.getElementById('chatInput');
+    const sendChat = document.getElementById('sendChat');
+
+    function addMessage(text, who='bot'){
+      const b = document.createElement('div'); b.className = 'bubble '+(who==='user'?'user':'bot'); b.textContent = text; messagesEl.appendChild(b); messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function botReply(msg){
+      const m=msg.toLowerCase();
+      if(m.includes('hello')||m.includes('hi')) return 'Hi! I\'m Facelook bot. Ask me about posting or your profile.';
+      if(m.includes('post')) return 'To create a post, go to Create Post and click Post. Posts are saved locally in this demo.';
+      if(m.includes('help')) return 'Try: "how to post", "who am i", "clear posts".';
+      if(m.includes('who am')) return 'You are '+(localStorage.getItem('facelook_user')||'Guest')+'.';
+      if(m.includes('clear posts')){ localStorage.removeItem(postsKey); renderPosts(); return 'All posts cleared.' }
+      // fallback echo
+      return 'You said: "'+msg+'" — I\'m a demo bot. Replace with real AI for smarter replies.';
+    }
+
+    sendChat.addEventListener('click', ()=>{
+      const v = chatInput.value.trim(); if(!v) return;
+      addMessage(v,'user'); chatInput.value='';
+      setTimeout(()=> addMessage(botReply(v),'bot'), 400);
+    });
+    chatInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendChat.click(); });
+
+    // --- helpers ---
+    function timeAgo(ts){ const s=(Date.now()-ts)/1000; if(s<60) return Math.round(s)+'s'; if(s<3600) return Math.round(s/60)+'m'; if(s<86400) return Math.round(s/3600)+'h'; return Math.round(s/86400)+'d'; }
+    function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    // show login if no user
+    if(!localStorage.getItem('facelook_user')) showScreen('login');
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Create Post</title>
+</head>
+<body class="container py-4">
+    <h3>Create a Post</h3>
+    <form action="/create-post" method="POST">
+        <textarea name="content" class="form-control mb-3" rows="5" placeholder="Write something..." required ></textarea>
+        <button class="btn btn-success">Publish</button>
+        <a class="btn btn-primary" href="/feed">View Posts</button>
+    </form>
+</body>
+</html>

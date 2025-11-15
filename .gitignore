@@ -1,0 +1,30 @@
+   # Dependencies
+   /node_modules
+
+   # Logs
+   npm-debug.log*
+   yarn-debug.log*
+   yarn-error.log*
+   .log
+
+   # Editor/OS specific files
+   .DS_Store
+   .env
+   .vscode/
+   *.sublime-project
+   *.sublime-workspace
+
+   # Build artifacts
+   /build
+   /dist
+   /tmp
+
+   # Test reports
+   /coverage
+
+   # Other common exclusions
+   .npm/
+   .nyc_output/
+   .idea/
+
+    .env
