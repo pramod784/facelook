@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { client } = require('./../lib/mongo_connect');
 const { emit } = require('../app');
+const { checkauth } = require('../lib/checkauth');
 /* GET home page. */
 router.get(['/','/login'], function(req, res, next) {
   res.render('login', { title: 'Welcome to facelook' });
@@ -55,11 +56,11 @@ router.get('/logout', function (req, res, next) {
   })
 })
 
-router.get('/register', function(req, res, next) {
+router.get('/register', checkauth, function(req, res, next) {
   res.render('register', { title: 'Welcome to facelook' });
   //res.render('facelook_template', { title: 'Welcome to facelook' });
 });
-router.post('/register', async function(req, res, next) {
+router.post('/register', checkauth, async function(req, res, next) {
   console.log("Register body",req.body);
   let fullname = req.body.fullname;
   let email = req.body.email;
@@ -85,11 +86,11 @@ router.post('/register', async function(req, res, next) {
   }
 });
 
-router.get('/create-post', function(req, res, next) {
+router.get('/create-post', checkauth, function(req, res, next) {
   res.render('create-post', { title: 'Welcome to facelook' });
 });
 
-router.post('/create-post', async function(req, res, next) {
+router.post('/create-post', checkauth, async function(req, res, next) {
   if(!req?.body?.content){
     return res.send("Post content is required.");
   }
@@ -115,13 +116,8 @@ router.post('/create-post', async function(req, res, next) {
   }
 });
 
-router.get('/feed', function(req, res, next) {
+router.get('/feed', checkauth, function(req, res, next) {
 
-  if(!req?.session?.user?.username ){
-    console.log("User not logged in, redirecting to login page.");
-    return res.redirect('/login');
-  }
-  
   const db = client.db("facelook-db");
   const posts = db.collection("posts");
   
